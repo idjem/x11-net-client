@@ -39,9 +39,9 @@ class Server extends ubk.Server {
 
 
 
-    var sendMouseClick = throttle((x, y, device_key) => {
+    var sendMouseClick = throttle((clickCode, device_key) => {
       forIn(this._clientsList, function(client) {
-        client.send('mouse', 'click', x, y);
+        client.send('mouse', 'click', clickCode);
       });
     }, 1000);
 

@@ -1765,31 +1765,31 @@ class Client {
 
     var x = 0;
     var y = 0;
-    
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaa', dom.offsetWidth, dom.offsetHeight, dom)
+  
+    var handelMouseDown = (e) => {
+      console.log(e.button, e.which)
+      client.send("mouse", "click", e.which);
+    };
+
+    dom.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      client.send("mouse", "click", 3);
+      return false;
+    }, false);
     
 
-    var handelMouseDown = throttle((e) => {
-      var domRec = dom.getClientRects()[0];
-      x = (e.clientX - domRec.x + 1) / domRec.width;
-      y = (e.clientY - domRec.y + 1) / domRec.height;
-
-      console.log(x, y);
-      client.send("mouse", "click", x, y);
-    }, 100);
 
     var handelMouseMove = throttle((e) => {
       var domRec = dom.getClientRects()[0];
-
       x = (e.clientX - domRec.x + 1) / domRec.width;
       y = (e.clientY - domRec.y + 1) / domRec.height;
-      console.log(x, y, domRec);
-
       client.send("mouse", "move", x, y);
     }, 100);
 
     dom.addEventListener('mousemove', handelMouseMove, false);
-    dom.addEventListener('touchmove', handelMouseDown, false);
+    dom.addEventListener('touchmove', handelMouseMove, false);
+    dom.addEventListener('click', handelMouseDown, false);
+
   }
 
 }

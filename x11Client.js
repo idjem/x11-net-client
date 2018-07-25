@@ -40,15 +40,15 @@ class x11Client {
     this.X.WarpPointer(0, this.root, 0, 0, 0, 0, posX, posY);	
   }
 
-  async click(x, y) {
+  async click(clickCode) {
     var defered = defer()
     this.X.require('xtest', (err, test) => {
       if(err)
         return defered.reject(err);
       var posX = Math.round(this.width * x);
       var posY = Math.round(this.height * y);
-      test.FakeInput(test.ButtonPress, 1, 0, this.root, 0, 0);
-      test.FakeInput(test.ButtonRelease, 1, 0, this.root, 0, 0);
+      test.FakeInput(test.ButtonPress, clickCode, 0, this.root, 0, 0);
+      test.FakeInput(test.ButtonRelease, clickCode, 0, this.root, 0, 0);
       defered.resolve()
     });
     return defered;
