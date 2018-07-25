@@ -7,17 +7,24 @@ const WsServer   = require('ws').Server;
 const ubk  = require('ubk');
 const throttle = require('mout/function/throttle');
 const defer  = require('nyks/promise/defer');
+const forIn  = require('mout/object/forIn');
 
-const port   = 9000;
-const wsPort = 8000;
+const express    = require('express');
+
+
+
+const port   = 8080;
+const wsPort = 9000;
 
 
 class Server extends ubk.Server {
 
   constructor() {
     super({server_port : port});
+    var app = express();
+    app.use("/", express.static('./www'));
+    this.httpServer = http.createServer(app);
 
-    this.httpServer = http.createServer();
     var web_sockets = new WsServer({
       server : this.httpServer,
       path   : '/'
@@ -26,19 +33,15 @@ class Server extends ubk.Server {
 
     var sendMouseMouve = throttle((x, y, device_key) => {
       forIn(this._clientsList, function(client) {
-        if(client.device_capability.indexOf('player-activscreen') == -1)
-          return
-        client.send('mouse', 'move', x, y)
-        //client.signal.apply(client, args);
+        client.send('mouse', 'move', x, y);
       });
     }, 100);
 
+
+
     var sendMouseClick = throttle((x, y, device_key) => {
       forIn(this._clientsList, function(client) {
-        if(client.device_capability.indexOf('player-activscreen') == -1)
-          return
-        client.send('mouse', 'click', x, y)
-        //client.signal.apply(client, args);
+        client.send('mouse', 'click', x, y);
       });
     }, 1000);
 
