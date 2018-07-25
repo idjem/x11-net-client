@@ -31,15 +31,19 @@ class Server extends ubk.Server {
     });
     web_sockets.on('connection', this.new_websocket_client);
 
-    var sendMouseMouve = throttle((x, y, device_key) => {
+    var sendMouseMouve = throttle((x, y, senderClientKey) => {
+      var remoteAdres = this._clientsList[senderClientKey].export_json().remoteAddress.address;
       forIn(this._clientsList, function(client) {
-        client.send('mouse', 'move', x, y);
+        if(client.export_json().remoteAddress.address !== remoteAdres)
+          client.send('mouse', 'move', x, y);
       });
     }, 100);
 
-    var sendMouseClick = throttle((clickCode, device_key) => {
+    var sendMouseClick = throttle((clickCode, senderClientKey) => {
+      var remoteAdres = this._clientsList[senderClientKey].export_json().remoteAddress.address;
       forIn(this._clientsList, function(client) {
-        client.send('mouse', 'click', clickCode);
+        if(client.export_json().remoteAddress.address !== remoteAdres)
+          client.send('mouse', 'click', clickCode);
       });
     }, 1000);
 

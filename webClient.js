@@ -12,12 +12,12 @@ class Client {
   
     var handelMouseDown = (e) => {
       console.log(e.button, e.which)
-      client.send("mouse", "click", e.which);
+      client.send("mouse", "click", e.which, client.client_key);
     };
 
     dom.addEventListener('contextmenu', function(e) {
       e.preventDefault();
-      client.send("mouse", "click", 3);
+      client.send("mouse", "click", 3, client.client_key);
       return false;
     }, false);
     
@@ -27,7 +27,7 @@ class Client {
       var domRec = dom.getClientRects()[0];
       x = (e.clientX - domRec.x + 1) / domRec.width;
       y = (e.clientY - domRec.y + 1) / domRec.height;
-      client.send("mouse", "move", x, y);
+      client.send("mouse", "move", x, y, client.client_key);
     }, 100);
 
     dom.addEventListener('mousemove', handelMouseMove, false);
