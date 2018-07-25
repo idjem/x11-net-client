@@ -12,12 +12,8 @@ var client = new ClientWs(wsUrl);
 client.connect();
 
 
-//document.onload = () => {
 
-//}
-
-
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", async () => {
   var element = document.createElement('div');
   element.style.cssText = 'width:1000px;height:1000px'
   document.body.appendChild(element)

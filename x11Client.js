@@ -12,6 +12,7 @@ class x11Client {
     this.createXManager().then(() => {
       client.register_rpc('mouse', 'move', this.move.bind(this));
       client.register_rpc('mouse', 'click', this.click.bind(this));
+      client.register_rpc('display', 'resolution', this.resolution.bind(this));
     });
   }
 
@@ -26,13 +27,24 @@ class x11Client {
 
       this.min_keycode = this.X.display.min_keycode;
       this.max_keycode = this.X.display.max_keycode;
-      
-      this.X.GetGeometry(this.root, (err, result) => {
-        this.width  = result.width;
-        this.height = result.height;
-        defered.resolve()
-      });
+      defered.resolve()
     })
+    await defered;
+    var resolution = await this.resolution();
+    this.width  = resolution.width;
+    this.height = resolution.height;
+  }
+
+
+  resolution() {
+    var defered = defer()
+    this.X.GetGeometry(this.root, (err, result) => {
+      if(err)
+        defered.reject(err)
+      var width  = result.width;
+      var height = result.height;
+      defered.resolve({width, height})
+    });
     return defered;
   }
 
@@ -47,8 +59,6 @@ class x11Client {
     this.X.require('xtest', (err, test) => {
       if(err)
         return defered.reject(err);
-      var posX = Math.round(this.width * x);
-      var posY = Math.round(this.height * y);
       test.FakeInput(test.ButtonPress, clickCode, 0, this.root, 0, 0);
       test.FakeInput(test.ButtonRelease, clickCode, 0, this.root, 0, 0);
       defered.resolve()
