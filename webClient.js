@@ -11,7 +11,6 @@ class Client {
     var y = 0;
   
     var handelMouseDown = (e) => {
-      console.log(e.button, e.which)
       client.send("mouse", "click", e.which, client.client_key);
     };
 
