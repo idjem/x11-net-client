@@ -9,8 +9,10 @@ class x11Client {
   constructor(client) {
     if(!client)
       return;
-    client.register_rpc('mouse', 'move', this.move.bind(this));
-    client.register_rpc('mouse', 'click', this.click.bind(this));
+    this.createXManager().then(() => {
+      client.register_rpc('mouse', 'move', this.move.bind(this));
+      client.register_rpc('mouse', 'click', this.click.bind(this));
+    });
   }
 
 
