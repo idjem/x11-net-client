@@ -10,7 +10,7 @@ class Client {
     var x = 0;
     var y = 0;
 
-    var ns = client_key ? 'mouse' : `mouse:${client_key}`;
+    var ns = client_key ? `mouse:${client_key}` : 'mouse';
   
     var handelMouseDown = (e) => {
       client.send(ns, 'click', e.which, client.client_key);
