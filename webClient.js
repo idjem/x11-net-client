@@ -34,12 +34,12 @@ class Client {
     dom.addEventListener('click', handelMouseDown, false);
     dom.addEventListener('contextmenu', handelMouseRightClick, false);
 
-    this.release(() => {
+    this.release = () => {
       dom.removeEventListener('mousemove', handelMouseMove);
       dom.removeEventListener('touchmove', handelMouseMove);
       dom.removeEventListener('click', handelMouseDown);
       dom.removeEventListener('contextmenu', handelMouseRightClick);
-    })
+    };
 
   }
 
