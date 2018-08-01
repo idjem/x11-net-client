@@ -1,5 +1,4 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-(function (global){
 'use strict';
 
 const ClientWs = require('ubk/client/ws');
@@ -10,19 +9,17 @@ const webClient = require('../webClient');
 const wsUrl  = `http://localhost:9000/`;
 
 
-var client = new ClientWs(wsUrl);
+
+//var client = new ClientWs(wsUrl);
+var client = new ClientWs("ws://" + window.location.host, { registration_parameters: { client_capability: ["player-activscreen"] } });
+
 client.connect();
 
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  var element = document.createElement('div');
-  element.style.cssText = 'width:1000px;height:1000px'
-  document.body.appendChild(element)
-  new webClient(element, client);
-  global.a  = element;
+  new webClient(document.body, client);
 });
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"../webClient":30,"ubk/client/ws":25}],2:[function(require,module,exports){
 "use strict";
 
@@ -1757,19 +1754,20 @@ const throttle = require('mout/function/throttle');
 
 class Client {
 
-  constructor(dom, client) {
+  constructor(dom, client, client_key) {
 
     var x = 0;
     var y = 0;
+
+    var ns = client_key ? 'mouse' : `mouse:client_key`;
   
     var handelMouseDown = (e) => {
-      console.log(e.button, e.which)
-      client.send("mouse", "click", e.which, client.client_key);
+      client.send(ns, 'click', e.which, client.client_key);
     };
 
     dom.addEventListener('contextmenu', function(e) {
       e.preventDefault();
-      client.send("mouse", "click", 3, client.client_key);
+      client.send(ns, 'click', 3, client.client_key);
       return false;
     }, false);
     
@@ -1779,7 +1777,7 @@ class Client {
       var domRec = dom.getClientRects()[0];
       x = (e.clientX - domRec.x + 1) / domRec.width;
       y = (e.clientY - domRec.y + 1) / domRec.height;
-      client.send("mouse", "move", x, y, client.client_key);
+      client.send(ns, 'move', x, y, client.client_key);
     }, 100);
 
     dom.addEventListener('mousemove', handelMouseMove, false);
@@ -1791,15 +1789,5 @@ class Client {
 }
 
 module.exports = Client;
-
-
-//onClick={this.handleClick}
-//onDoubleClick={this.handleDoubleClick}
-//onMouseEnter={this.handleMouseEnter}
-//onMouseMove={this.handleMouseMove}
-//onTouchEnd={this.handleTouchEnd}
-//onTouchMove={this.handleTouchMove}
-//onTouchStart={this.handleTouchStart}
-
 
 },{"mout/function/throttle":7}]},{},[1]);
