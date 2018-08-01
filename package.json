@@ -1,5 +1,5 @@
 {
-  "name": "x11-remote-control",
+  "name": "x11-net-client",
   "version": "2.0.1",
   "description": "",
   "main": "index.js",
@@ -17,6 +17,6 @@
     "express": "^4.16.3"
   },
   "scripts": {
-    "build-exemple": "browserify exemple/webclient.js -o exemple/www/index.js"
+    "build-exemple": "browserify examples/webclient.js -o examples/www/index.js"
   }
 }
