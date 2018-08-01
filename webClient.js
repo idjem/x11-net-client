@@ -10,19 +10,17 @@ class Client {
     var x = 0;
     var y = 0;
 
-    var ns = client_key ? 'mouse' : `mouse:client_key`;
+    var ns = client_key ? 'mouse' : `mouse:${client_key}`;
   
     var handelMouseDown = (e) => {
       client.send(ns, 'click', e.which, client.client_key);
     };
 
-    dom.addEventListener('contextmenu', function(e) {
+    var handelMouseRightClick = (e) => {
       e.preventDefault();
       client.send(ns, 'click', 3, client.client_key);
       return false;
-    }, false);
-    
-
+    }
 
     var handelMouseMove = throttle((e) => {
       var domRec = dom.getClientRects()[0];
@@ -34,6 +32,14 @@ class Client {
     dom.addEventListener('mousemove', handelMouseMove, false);
     dom.addEventListener('touchmove', handelMouseMove, false);
     dom.addEventListener('click', handelMouseDown, false);
+    dom.addEventListener('contextmenu', handelMouseRightClick, false);
+
+    this.release(() => {
+      dom.removeEventListener('mousemove', handelMouseMove);
+      dom.removeEventListener('touchmove', handelMouseMove);
+      dom.removeEventListener('click', handelMouseDown);
+      dom.removeEventListener('contextmenu', handelMouseRightClick);
+    })
 
   }
 
