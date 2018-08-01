@@ -8,14 +8,14 @@ const webClient = require('../webClient');
 const wsUrl  = `http://localhost:9000/`;
 
 
-var client = new ClientWs(wsUrl);
+
+//var client = new ClientWs(wsUrl);
+var client = new ClientWs("ws://" + window.location.host, { registration_parameters: { client_capability: ["player-activscreen"] } });
+
 client.connect();
 
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  var element = document.createElement('div');
-  element.style.cssText = 'width:1000px;height:1000px'
-  document.body.appendChild(element)
-  new webClient(element, client);
+  new webClient(document.body, client);
 });
