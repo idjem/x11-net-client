@@ -8,11 +8,11 @@
   "dependencies": {
     "mout": "^1.1.0",
     "nyks": "^5.5.0",
-    "ubk": "^5.1.3",
-    "ws": "^1.1.1",
     "x11": "^2.3.0"
   },
   "devDependencies": {
+    "ubk": "^5.1.3",
+    "ws": "^1.1.1",
     "browserify": "^16.2.2",
     "express": "^4.16.3"
   },
