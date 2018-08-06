@@ -54,7 +54,8 @@ class x11Client {
     this.X.WarpPointer(0, this.root, 0, 0, 0, 0, posX, posY);	
   }
 
-  async click(clickCode) {
+  async click(clickCode, x, y) {
+    this.move(x, y);
     var defered = defer()
     this.X.require('xtest', (err, test) => {
       if(err)

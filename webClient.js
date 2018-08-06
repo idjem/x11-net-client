@@ -13,12 +13,12 @@ class Client {
     var ns = client_key ? `mouse:${client_key}` : 'mouse';
   
     var handelMouseDown = (e) => {
-      client.send(ns, 'click', e.which, client.client_key);
+      client.send(ns, 'click', e.which, x, y);
     };
 
     var handelMouseRightClick = (e) => {
       e.preventDefault();
-      client.send(ns, 'click', 3, client.client_key);
+      client.send(ns, 'click', 3, x, y);
       return false;
     }
 
@@ -26,7 +26,7 @@ class Client {
       var domRec = dom.getClientRects()[0];
       x = (e.clientX - domRec.x + 1) / domRec.width;
       y = (e.clientY - domRec.y + 1) / domRec.height;
-      client.send(ns, 'move', x, y, client.client_key);
+      client.send(ns, 'move', x, y);
     }, 100);
 
     dom.addEventListener('mousemove', handelMouseMove, false);
