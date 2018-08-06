@@ -7,25 +7,26 @@ class Client {
 
   constructor(dom, client, client_key) {
 
-    var x = 0;
-    var y = 0;
-
     var ns = client_key ? `mouse:${client_key}` : 'mouse';
   
     var handelMouseDown = (e) => {
+      var x = (e.clientX - domRec.x + 1) / domRec.width;
+      var y = (e.clientY - domRec.y + 1) / domRec.height;
       client.send(ns, 'click', e.which, x, y);
     };
 
     var handelMouseRightClick = (e) => {
       e.preventDefault();
+      var x = (e.clientX - domRec.x + 1) / domRec.width;
+      var y = (e.clientY - domRec.y + 1) / domRec.height;
       client.send(ns, 'click', 3, x, y);
       return false;
     }
 
     var handelMouseMove = throttle((e) => {
       var domRec = dom.getClientRects()[0];
-      x = (e.clientX - domRec.x + 1) / domRec.width;
-      y = (e.clientY - domRec.y + 1) / domRec.height;
+      var x = (e.clientX - domRec.x + 1) / domRec.width;
+      var y = (e.clientY - domRec.y + 1) / domRec.height;
       client.send(ns, 'move', x, y);
     }, 100);
 
